@@ -218,4 +218,4 @@ Prices and product details change; check them before quoting.
 ## Team
 
 Group 4: Yuxuan Li, Xinrui (Rita) Geng, Imran (Rizki) Putranto, Wan Shuen Siaw.
-Project expert: *to be confirmed*.
+Project expert: Rizki
