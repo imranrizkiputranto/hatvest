@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hatvest Handover Guide</title>
+<meta name="description" content="Handover guide for Hatvest, the Group 4 Tech Canopies crop-stress hat: background, research, build, results and next steps.">
+<style>
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1F2420; --muted:#5D6661; --line:#E2E4DE;
+  --olive:#4F6F2A; --olive-soft:#EEF2E6; --terra:#B4532A; --terra-soft:#F7ECE6;
+  --code:#F1F2EE; --link:#3E5C1E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141714; --surface:#1C201C; --ink:#E6E9E3; --muted:#A3ABA4; --line:#2E342E;
+    --olive:#9CC06A; --olive-soft:#243021; --terra:#E08A62; --terra-soft:#33241D;
+    --code:#232823; --link:#B3D485;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141714; --surface:#1C201C; --ink:#E6E9E3; --muted:#A3ABA4; --line:#2E342E;
+  --olive:#9CC06A; --olive-soft:#243021; --terra:#E08A62; --terra-soft:#33241D;
+  --code:#232823; --link:#B3D485;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+a{color:var(--link)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:1fr;gap:40px}
+@media (min-width:1080px){.wrap{grid-template-columns:220px minmax(0,1fr);padding:0 32px}}
+nav.toc{font-size:14px}
+@media (min-width:1080px){nav.toc{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;padding-top:40px}}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:4px 10px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--ink);border-left-color:var(--olive)}
+nav.toc .toc-title{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 12px}
+main{max-width:760px;padding-bottom:80px;min-width:0}
+header.hero{padding:40px 0 8px}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);font-weight:700}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.15;margin:8px 0 12px}
+.lede{font-size:19px;color:var(--muted);margin:0 0 16px}
+.meta{font-size:14px;color:var(--muted)}
+h2{font-size:26px;line-height:1.25;margin:56px 0 12px;padding-top:12px;border-top:1px solid var(--line)}
+h2 .num{color:var(--olive);margin-right:8px}
+h3{font-size:19px;margin:28px 0 8px}
+p,ul,ol{margin:0 0 14px}
+li{margin:4px 0}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.5}
+pre code{background:none;padding:0}
+.table-scroll{overflow-x:auto;margin:0 0 16px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:20px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.tile b{display:block;font-size:24px;line-height:1.2}
+.tile span{font-size:14px;color:var(--muted)}
+.note{border-left:4px solid var(--olive);background:var(--olive-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+.note.warn{border-left-color:var(--terra);background:var(--terra-soft)}
+.note p:last-child{margin-bottom:0}
+.formula{font-size:22px;font-weight:700;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;margin:16px 0}
+figure{margin:20px 0}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.p1{background:var(--terra-soft);color:var(--terra)}
+.p2{background:var(--olive-soft);color:var(--olive)}
+.p3{background:var(--code);color:var(--muted)}
+.refs li{font-size:15px;overflow-wrap:anywhere}
+.theme-btn{float:right;margin-top:40px;font:inherit;font-size:13px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:56px;padding-top:16px}
+.svg-ink{fill:var(--ink)} .svg-muted{fill:var(--muted)} .svg-line{stroke:var(--line)}
+.svg-olive{fill:var(--olive)} .svg-terra{fill:var(--terra)} .svg-surface{fill:var(--surface);stroke:var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p class="toc-title">Contents</p>
+  <ol>
+    <li><a href="#plain">In plain English</a></li>
+    <li><a href="#summary">1. Summary</a></li>
+    <li><a href="#background">2. Background</a></li>
+    <li><a href="#ndvi">3. How NDVI works</a></li>
+    <li><a href="#hat">4. The hat we built</a></li>
+    <li><a href="#firmware">5. Firmware and logger</a></li>
+    <li><a href="#results">6. Testing and results</a></li>
+    <li><a href="#limits">7. Limitations</a></li>
+    <li><a href="#improvements">8. Improvements</a></li>
+    <li><a href="#start">9. Your first week</a></li>
+    <li><a href="#lessons">10. Lessons and gotchas</a></li>
+    <li><a href="#refs">11. References</a></li>
+  </ol>
+</nav>
+
+<main>
+<button class="theme-btn" type="button" id="themeBtn" aria-label="Toggle light or dark theme">Theme</button>
+<header class="hero">
+  <div class="kicker">Tech Canopies · Group 4 · Handover</div>
+  <h1>Hatvest: a hat that reads crop health</h1>
+  <p class="lede">A conical field hat with a spectral sensor on the brim. Look at a plant, and the brim glows green if the leaf looks healthy or red if it may be stressed.</p>
+  <p class="meta">MSc Cleantech Innovation, Imperial College London · Handover 20 October 2026 · Group 4: Yuxuan Li, Xinrui (Rita) Geng, Imran (Rizki) Putranto, Wan Shuen Siaw · Project expert: to be confirmed · "Hatvest" is a working name.</p>
+</header>
+
+<section id="plain">
+<h2>In plain English</h2>
+<p><b>Hatvest is a farmer's hat that checks how healthy a plant is just by looking at it, and shows the answer as a green or red light on the brim.</b></p>
+
+<h3>How it works</h3>
+<p>Plants reflect light in two ways that matter here:</p>
+<ul>
+  <li><b>Healthy leaves soak up red light.</b> The green stuff in leaves (chlorophyll) uses red light as food to grow, so very little red bounces back.</li>
+  <li><b>Healthy leaves bounce back lots of "invisible" light.</b> Just beyond red is near-infrared light, which our eyes can't see. A healthy leaf's insides are full of tiny air pockets that scatter it back out, like a mirror maze.</li>
+</ul>
+<p>When a plant struggles (too dry, too hot, hungry or sick), it loses some of its green stuff, so <b>more red light bounces back</b>. A small sensor on the front of the hat measures both kinds of light and turns them into one score, called NDVI. High score: healthy leaf, the light glows <b style="color:var(--olive)">green</b>. Low score: struggling leaf, it glows <b style="color:var(--terra)">red</b>.</p>
+
+<h3>Why it matters</h3>
+<ul>
+  <li><b>Climate change is making droughts and heatwaves more common and more severe</b>, and that is already hurting harvests.<sup>1</sup></li>
+  <li><b>Most of the world's farms are tiny.</b> About 84% are smaller than 2 hectares, roughly three football pitches.<sup>3</sup> Those farmers can't afford drones or expensive equipment.</li>
+  <li><b>Many of these farmers already wear a conical hat in the field</b>, so the sensor goes on something they already use and their hands stay free.</li>
+</ul>
+
+<h3>Why use it if a farmer can just look?</h3>
+<p>Honestly, our hat does not (yet) see problems before a farmer's eyes do; the research does not support that claim for this kind of sensor. What it does offer:</p>
+<ol>
+  <li><b>A number instead of a guess.</b> How green a leaf looks changes with sunshine, cloud and who is looking. A score is the same every time. IRRI, the international rice research institute, gave out over 250,000 colour cards to Asian rice farmers to make this judgement more consistent.<a href="#s7">[g]</a> Our hat does the same job automatically.</li>
+  <li><b>Spotting slow decline.</b> Eyes catch obvious yellowing, but are worse at noticing that one corner of a field is slightly weaker than the rest.</li>
+  <li><b>A record.</b> Later versions could save each reading with its location to build a map of the whole field. Farmers who don't want that just use the light.</li>
+  <li><b>No extra effort.</b> It works while the farmer walks the field anyway.</li>
+</ol>
+
+<h3>The research behind it</h3>
+<div class="table-scroll"><table>
+<thead><tr><th>What we claim</th><th>Who showed it</th></tr></thead>
+<tbody>
+<tr><td>Plants soak up red light and bounce back invisible light, and the NDVI score measures this</td><td>Rouse et al. 1974 (first used the score)<sup>4</sup>; Tucker 1979<sup>5</sup></td></tr>
+<tr><td>Stressed plants reflect light differently, so light can be used to check plant health</td><td>Peñuelas &amp; Filella 1998<sup>6</sup></td></tr>
+<tr><td>Catching stress <em>before</em> it is visible is possible, but with more advanced sensors (such as leaf temperature), not this simple score</td><td>Zarco-Tejada et al. 2018<sup>7</sup></td></tr>
+</tbody></table></div>
+
+<h3>What we found</h3>
+<p>We tested six plants on campus: three healthy and three struggling. <b>Every healthy leaf scored higher than every struggling one</b>, with a clear gap between the two groups.</p>
+
+<h3>What is not proven yet</h3>
+<ul>
+  <li>It was a <b>small test</b>: six plants, one afternoon.</li>
+  <li><b>Changing light</b> (sun, cloud, shade) throws readings off. For now we fix that by holding a sheet of white paper under the sensor first, which isn't practical in a field.</li>
+  <li><b>We haven't asked farmers</b> whether they would wear it or find it useful.</li>
+  <li><b>Catching problems earlier than the eye</b> is the big question for the next team. Our sensor already has extra colour channels to start testing it, and a cheap temperature sensor could be added.</li>
+</ul>
+<div class="note"><p><b>In one line:</b> Hatvest turns a farmer's "this plant looks a bit off" into a consistent score, hands-free, and is a first step towards spotting problems before anyone can see them.</p></div>
+</section>
+
+<!-- 1 -->
+<h2 id="summary"><span class="num">1</span>Summary</h2>
+<p>Climate change is making droughts and heatwaves more frequent and intense, so farmers need to catch crop stress earlier. Small-scale farmers usually spot it by eye, once leaves have already changed colour. Plant stress changes how leaves reflect red and near-infrared light, and a cheap spectral sensor can measure that. Research shows some spectral signals can flag stress before it is visible; whether a simple NDVI sensor can do that is still to be tested.</p>
+<p>We built a working prototype: an AS7343 sensor on the front brim of a traditional conical hat, an Arduino Uno and 9 V battery at the back, and a red/green LED on the brim. It calculates NDVI and lights the LED. In our first test it separated healthy from stressed leaves with no overlap.</p>
+<div class="tiles">
+  <div class="tile"><b>0.43 vs 0.26</b><span>Mean NDVI, healthy vs stressed leaves</span></div>
+  <div class="tile"><b>20 of 20</b><span>Readings classified correctly at a 0.35 threshold</span></div>
+  <div class="tile"><b>±0.02</b><span>Typical spread of repeat readings on one leaf</span></div>
+  <div class="tile"><b>Light</b><span>The biggest open problem: calibration only holds for one light condition</span></div>
+</div>
+<div class="note"><p><b>Where it stands:</b> working bench and on-hat prototype. Enclosures not fitted, electronics exposed, tested on six campus plants in one session. Treat the results as a proof of concept, not validation.</p></div>
+
+<!-- 2 -->
+<h2 id="background"><span class="num">2</span>Background: climate adaptation and crop stress</h2>
+<h3>Why it matters now</h3>
+<ul>
+  <li><b>Extremes are increasing.</b> The IPCC finds that more frequent and intense weather extremes have already reduced food security, and that climate change has slowed the growth of agricultural productivity over the past 50 years.<sup>1</sup></li>
+  <li><b>Heat costs yield.</b> Each 1 °C of global warming is estimated to cut average yields of rice by about 3.2%, wheat by about 6% and maize by about 7.4%.<sup>2</sup></li>
+  <li><b>Adaptation means acting sooner.</b> Water, shade or treatment applied early can save a crop that would be lost if stress were only noticed once leaves wilt or yellow.</li>
+</ul>
+<h3>Who it is for</h3>
+<p>Small-scale farmers, especially in South-East Asia, and the agronomists and extension officers who advise them. Of the world's more than 608 million farms, about 84% are smaller than 2 hectares.<sup>3</sup> Conical hats (caping, nón lá, salakot) are already standard field wear in the region, which is why we built the sensor into one: no new habit, and the farmer's hands stay free.</p>
+<h3>The problem</h3>
+<p>Farmers mostly check crops by eye. By the time leaves visibly change, the plant may already have lost yield. Tools that see stress earlier exist, but they are handheld, specialist, or work at a scale too coarse for small plots (see below).</p>
+<h3>Similar technologies already in use</h3>
+<p>Measuring plant health from red and near-infrared light is well established. What differs is the platform, the cost and who it is built for.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Product / company</th><th>How it works</th><th>Gap for small-scale farmers</th></tr></thead>
+<tbody>
+<tr><td><b>GreenSeeker handheld</b><br>Trimble (now PTx Trimble)</td><td>Point-and-shoot NDVI meter. Its own red and NIR LEDs light the leaf, so "readings are not affected by light intensity". List price from US$495. <a href="#s1">[a]</a> <a href="#s2">[b]</a> <a href="#s3">[c]</a></td><td>Occupies the farmer's hands; a separate tool to buy, carry and remember.</td></tr>
+<tr><td><b>Crop Circle</b> (CC-430, CC-470)<br>Holland Scientific</td><td>Active canopy sensors with their own modulated LEDs; red, red-edge and NIR bands; used for in-season nitrogen diagnosis. <a href="#s4">[d]</a></td><td>Specialist instrument aimed at agronomists and researchers.</td></tr>
+<tr><td><b>MicaSense RedEdge</b><br>multispectral drone camera</td><td>Five bands including red, red edge and NIR. Calibrated with a reflectance panel plus an upward-facing downwelling light sensor (DLS 2), the same idea as our proposed sky sensor. <a href="#s5">[e]</a></td><td>Needs a drone, a trained pilot and image processing.</td></tr>
+<tr><td><b>Sentinel-2</b><br>ESA Copernicus satellites</td><td>Red and NIR bands at 10 m resolution, revisiting about every 5 days; widely used for NDVI maps. <a href="#s6">[f]</a></td><td>A 10 m pixel can cover a whole smallholder plot; tropical cloud cover hides fields.</td></tr>
+<tr><td><b>Leaf Colour Chart</b><br>IRRI</td><td>Plastic card of green shades for judging rice nitrogen by eye. Over 250,000 given to rice farmers in eight Asian countries, including Indonesia. <a href="#s7">[g]</a></td><td>Very cheap, but relies on visible colour, so it is late and subjective.</td></tr>
+<tr><td><b>Plantix</b><br>AI phone app</td><td>Diagnoses pests and diseases from a photo; covers 45 crops and 500+ types of damage. <a href="#s8">[h]</a></td><td>Only sees symptoms once they are visible.</td></tr>
+</tbody></table></div>
+<p><b>Our angle:</b> the same measurement as a handheld NDVI meter, built into something farmers already wear, hands-free and low-cost. The trade-off is that a passive sensor depends on ambient light, which GreenSeeker and Crop Circle avoid with their own LEDs.</p>
+
+<h3>Value proposition: why use it if farmers can see stress?</h3>
+<p>Experienced farmers spot obvious stress by eye, and NDVI is not proven to see it earlier (see <a href="#ndvi">section 3</a>). The honest selling point is different: <b>turning what a farmer sees into a consistent, recorded number, hands-free, on a platform that can add earlier-warning sensors.</b></p>
+<ol>
+  <li><b>Eyes are inconsistent; a number isn't.</b> How green a leaf looks shifts with sun, cloud, time of day, crop variety and who is looking. IRRI's Leaf Colour Chart, given to over 250,000 Asian rice farmers, exists to standardise that "how green" judgement for fertiliser decisions.<a href="#s7">[g]</a> Hatvest does the same job with a measured number, hands-free.</li>
+  <li><b>Gradual decline is easy to miss.</b> The eye catches obvious yellowing, but not one corner of a field being slightly less vigorous than the rest. Commercial NDVI tools such as GreenSeeker and Crop Circle are widely used this way, to check crop nitrogen status during the season rather than to detect disease early.<a href="#s2">[b]</a> <a href="#s4">[d]</a></li>
+  <li><b>Data, not memory.</b> Eye checks leave no record. Logged readings (later with GPS) become a field map, a trend over time, and evidence for an agronomist, insurer or buyer.</li>
+  <li><b>Coverage without extra effort.</b> It measures while the farmer walks the field they already walk.</li>
+</ol>
+<p class="meta">Points 2 to 4 are reasoning, not yet tested with farmers; validating them is part of the next phase.</p>
+
+<h3>What actually detects stress early</h3>
+<p>Research that detects stress before symptoms mostly relies on signals other than NDVI:<sup>6,7</sup></p>
+<div class="table-scroll"><table>
+<thead><tr><th>Signal</th><th>What it picks up</th><th>Hardware</th></tr></thead>
+<tbody>
+<tr><td><b>Leaf temperature</b> (thermal)</td><td>Water-stressed leaves close their pores and warm up, often before wilting. A leading early signal in the <em>Xylella</em> study.<sup>7</sup></td><td>Thermal camera; a low-cost infrared thermometer for a basic version</td></tr>
+<tr><td><b>Chlorophyll fluorescence</b></td><td>Photosynthesis slowing before pigments visibly change.<sup>6,7</sup></td><td>Fluorometers; solar-induced fluorescence from aircraft or satellites</td></tr>
+<tr><td><b>PRI</b> (531 and 570 nm)</td><td>Short-term changes in how efficiently the leaf uses light.<sup>6</sup></td><td>Narrow-band spectrometer</td></tr>
+<tr><td><b>Red-edge and green-band indices</b></td><td>Chlorophyll changes the red band misses at normal chlorophyll levels.<sup>6</sup></td><td>Multispectral sensors, <b>including our AS7343</b> (~550 nm and ~745 nm channels)</td></tr>
+<tr><td><b>Water band</b> (~970 nm)</td><td>Plant water content.<sup>6</sup></td><td>NIR spectrometer</td></tr>
+</tbody></table></div>
+<p>Drone cameras such as MicaSense measure red, red-edge and NIR (some models add thermal) and turn them into NDVI and NDRE maps of whole fields. Resellers market them as revealing stress "long before" it is visible, but cite no trial data.<a href="#s9">[i]</a> They face the same physics as Hatvest; their real strength is mapping a whole field from above so patches stand out.</p>
+
+
+<!-- 3 -->
+<h2 id="ndvi"><span class="num">3</span>How NDVI works</h2>
+<p>A healthy leaf does two things with light:</p>
+<ul>
+  <li><b>It absorbs red light.</b> Chlorophyll uses red light for photosynthesis, so little red is reflected.</li>
+  <li><b>It reflects near-infrared (NIR).</b> Light the eye can't see, scattered back by the leaf's internal structure.</li>
+</ul>
+<p>NDVI (Normalised Difference Vegetation Index)<sup>4,5</sup> turns the contrast between the two into one number:</p>
+<div class="formula">NDVI = (NIR − Red) ÷ (NIR + Red)</div>
+<p>It runs from −1 to +1. Dense, green vegetation scores high; stressed, sparse or dead vegetation scores lower. In the literature NDVI mainly tracks the amount of green, photosynthetically active vegetation.<sup>5,6</sup></p>
+
+<h3>Why red and NIR behave so differently</h3>
+<p>Two different physical processes are at work in the two bands.<sup>5,6</sup></p>
+<p><b>Red: absorbed by chlorophyll.</b> Chlorophyll <em>a</em> and <em>b</em> absorb most strongly in the blue (around 430 to 450 nm) and the red (around 640 to 680 nm). A photon at those energies lifts an electron in the molecule to a higher energy state, and that energy feeds photosynthesis. So in the visible range a healthy leaf reflects little light; carotenoids absorb some blue too.</p>
+<p><b>Green: absorbed less, so more of it comes back.</b> Chlorophyll absorbs green only weakly, so more green light is scattered back out of the leaf than red or blue. That is why leaves look green. A leaf still absorbs much of the green light that hits it; it simply reflects more green than other visible colours.</p>
+<p><b>NIR: scattered by the leaf's structure.</b> Beyond about 700 nm chlorophyll stops absorbing, and the leaf has no strong absorption features up to about 1,300 nm. Inside, the spongy mesophyll is a loose arrangement of cells with air gaps between them. Each cell wall to air boundary is a sharp change in refractive index (roughly 1.4 to 1.5 for the wet cell wall against 1.0 for air), so it acts like a partial mirror. Light bounces between many such boundaries and, with almost nothing absorbing it, a large share (often around half) comes back out as reflected light; most of the rest passes through the leaf.</p>
+
+<h3>How stress changes the two bands</h3>
+<div class="table-scroll"><table>
+<thead><tr><th>Stress effect</th><th>Red band</th><th>NIR band</th></tr></thead>
+<tbody>
+<tr><td>Chlorophyll breaks down (drought, nutrient shortage, disease, senescence)</td><td>Less absorption, so <b>higher red reflectance</b>. This is the most consistent signal.</td><td>Little direct effect</td></tr>
+<tr><td>Leaf structure and water change (wilting, collapsing cells, damage)</td><td>Little direct effect</td><td><b>Can go either way.</b> Wilting and lost leaf area usually lower NIR from a crop canopy, but a damaged single leaf can reflect <em>more</em> NIR: ozone-damaged leaves showed a raised NIR plateau.<sup>6</sup></td></tr>
+</tbody></table></div>
+<p>Our own data shows this. In the worked example below, the stressed leaf reflected <em>more</em> NIR than the healthy one (0.464 vs 0.422). Its NDVI fell because its red reflectance almost doubled (0.318 vs 0.174), not because NIR dropped. A rise in NIR on its own would push NDVI <em>up</em>; here the jump in red outweighed it. So the red band is doing most of the work.</p>
+
+<div class="note"><p><b>Can NDVI catch stress before it is visible?</b> Not reliably, on current evidence. A common claim is that chlorophyll changes before leaf structure does, so NDVI should flag stress early. But:</p>
+<ul>
+  <li><b>Red reflectance saturates.</b> At medium to high chlorophyll levels, reflectance responds to chlorophyll changes more strongly near 550 nm (green) than near 675 nm (red), so small early losses barely move the red band.<sup>6</sup> Tucker likewise found red radiance levels off sooner than NIR as green biomass increases.<sup>5</sup> The red edge is a good indicator of leaf chlorophyll.<sup>6</sup></li>
+  <li><b>The eye sees the same change.</b> Chlorophyll loss in the visible range is what we see as yellowing.</li>
+  <li><b>NDVI has missed stress in field studies.</b> It could not separate apple trees with different levels of mite attack, where pigment-based indices could,<sup>6</sup> and it "did not differ significantly" between asymptomatic and symptomatic olive trees infected with <em>Xylella</em>; that early detection came from fluorescence, pigment and thermal traits.<sup>7</sup></li>
+</ul>
+<p>Our own test only compared leaves that were already visibly stressed. Treat "earlier than the eye" as a goal to test, not a result. Red-edge, green-band and thermal sensing are the strongest leads.</p></div>
+
+<figure>
+<svg viewBox="0 0 640 260" role="img" aria-label="Schematic leaf reflectance curves: a healthy leaf reflects little red and a lot of near-infrared; a stressed leaf reflects more red and, at canopy level, often less near-infrared.">
+  <rect x="300" y="20" width="60" height="190" fill="#B4532A" opacity=".12"/>
+  <rect x="470" y="20" width="110" height="190" fill="#4F6F2A" opacity=".12"/>
+  <line x1="60" y1="210" x2="610" y2="210" class="svg-line" stroke-width="1.5"/>
+  <line x1="60" y1="20" x2="60" y2="210" class="svg-line" stroke-width="1.5"/>
+  <path d="M60 200 C120 195,150 175,190 165 C220 158,250 175,290 190 C320 197,345 196,365 185 C395 120,420 60,470 52 L600 50" fill="none" stroke="var(--olive)" stroke-width="3"/>
+  <path d="M60 198 C120 192,150 170,190 160 C220 152,250 160,290 168 C320 172,345 170,365 165 C395 135,420 105,470 98 L600 96" fill="none" stroke="var(--terra)" stroke-width="3" stroke-dasharray="7 5"/>
+  <text x="330" y="236" text-anchor="middle" font-size="13" class="svg-muted">Red (~690 nm)</text>
+  <text x="525" y="236" text-anchor="middle" font-size="13" class="svg-muted">NIR (~855 nm)</text>
+  <text x="70" y="252" font-size="12" class="svg-muted">400 nm</text>
+  <text x="600" y="252" text-anchor="end" font-size="12" class="svg-muted">900 nm</text>
+  <text x="18" y="120" font-size="12" class="svg-muted" transform="rotate(-90 18 120)" text-anchor="middle">Reflectance</text>
+  <text x="600" y="44" text-anchor="end" font-size="13" font-weight="700" class="svg-olive">Healthy</text>
+  <text x="600" y="90" text-anchor="end" font-size="13" font-weight="700" class="svg-terra">Stressed</text>
+</svg>
+<figcaption>Schematic only (not measured data): stress raises red reflectance and, especially across a canopy, often lowers NIR, so NDVI falls.</figcaption>
+</figure>
+
+<h3>Why we calibrate with a white card</h3>
+<p>The sensor doesn't measure reflectance directly. It counts how much light arrives in each channel, and that count depends on two things besides the leaf: <b>how much red and NIR the light source gives out</b> (sunlight, cloud and lamps all have different colour balances) and <b>how sensitive the sensor is in each channel</b>. Neither is the same for red and NIR, so raw counts are biased before the leaf even comes into it.</p>
+<p>A sheet of white paper reflects nearly all light in both channels equally. So a reading of white paper tells you "this is 100%" for each channel, in this light, with this sensor. Dividing the leaf reading by it turns counts into <b>reflectance</b>: the fraction of the available light the leaf sends back, like an exam mark "out of" a total. That is what the <code>w</code> command stores.</p>
+
+<h3>Worked example (real readings from our test)</h3>
+<p><b>Step 1. White reference</b> (white paper, outdoors, 19 Oct): red = <b>2,454</b> counts, NIR = <b>3,613</b> counts. Even on white paper NIR reads higher than red, which shows the light and sensor are not balanced between channels.</p>
+<p><b>Step 2. Divide each leaf reading by the white reference</b> to get reflectance:</p>
+<div class="table-scroll"><table>
+<thead><tr><th></th><th class="num">Red counts</th><th class="num">Red reflectance</th><th class="num">NIR counts</th><th class="num">NIR reflectance</th></tr></thead>
+<tbody>
+<tr><td>Healthy leaf (H1)</td><td class="num">427</td><td class="num">427 ÷ 2,454 = <b>0.174</b></td><td class="num">1,524</td><td class="num">1,524 ÷ 3,613 = <b>0.422</b></td></tr>
+<tr><td>Stressed leaf (S1)</td><td class="num">781</td><td class="num">781 ÷ 2,454 = <b>0.318</b></td><td class="num">1,676</td><td class="num">1,676 ÷ 3,613 = <b>0.464</b></td></tr>
+</tbody></table></div>
+<p>The healthy leaf reflects 17% of the red light (chlorophyll absorbs the rest) and 42% of the NIR. The stressed leaf reflects almost twice as much red (32%), because it has less chlorophyll.</p>
+<p><b>Step 3. NDVI from reflectance:</b></p>
+<pre><code>Healthy:  (0.422 − 0.174) ÷ (0.422 + 0.174) = 0.248 ÷ 0.596 = 0.416  → green (≥ 0.35)
+Stressed: (0.464 − 0.318) ÷ (0.464 + 0.318) = 0.146 ÷ 0.782 = 0.186  → red   (< 0.35)</code></pre>
+<p>These match the values the Arduino logged (0.416 and 0.186).</p>
+
+<h3>What goes wrong without the white card</h3>
+<p>Put the raw counts straight into the formula and you get:</p>
+<pre><code>Healthy:  (1,524 − 427) ÷ (1,524 + 427) = 0.562
+Stressed: (1,676 − 781) ÷ (1,676 + 781) = 0.364  → would wrongly glow green</code></pre>
+<p>Both numbers are inflated because the light and sensor favour NIR, and the stressed leaf ends up above the 0.35 threshold. The white card removes that bias. Note that a simple change in brightness (the same light, just dimmer) would cancel out in the NDVI ratio anyway; what the white card really corrects is the <b>balance between red and NIR</b>, and that balance is what changes with sun, cloud and lamps.</p>
+<div class="note warn"><p><b>The catch:</b> the white reference is only valid for the light at the moment it was taken. Clouds, shade, time of day or moving indoors all change it. It cannot rescue light sources with almost no NIR, such as indoor LED lighting. This is the main thing for the next team to solve (see <a href="#improvements">section 8</a>).</p></div>
+
+<!-- 4 -->
+<h2 id="hat"><span class="num">4</span>The hat we built</h2>
+<h3>How a farmer uses it</h3>
+<ol>
+  <li>Wear the hat and walk the field.</li>
+  <li>Look at a plant and hold still.</li>
+  <li>The brim sensor reads the leaf (about once a second).</li>
+  <li>The brim LED glows <b style="color:var(--olive)">green</b> (NDVI ≥ 0.35) or <b style="color:var(--terra)">red</b> (below).</li>
+</ol>
+
+<figure>
+<svg viewBox="0 0 640 170" role="img" aria-label="System diagram: leaf reflects light to AS7343 sensor on the front brim, which sends data over I2C to the Arduino Uno at the back, which drives the red/green LED on the brim. A 9 V battery powers the Uno.">
+  <rect x="10" y="50" width="110" height="60" rx="10" class="svg-surface"/>
+  <text x="65" y="76" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink">Leaf</text>
+  <text x="65" y="96" text-anchor="middle" font-size="12" class="svg-muted">reflects light</text>
+  <rect x="160" y="50" width="130" height="60" rx="10" class="svg-surface"/>
+  <text x="225" y="76" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink">AS7343</text>
+  <text x="225" y="96" text-anchor="middle" font-size="12" class="svg-muted">front brim</text>
+  <rect x="330" y="50" width="140" height="60" rx="10" class="svg-surface"/>
+  <text x="400" y="76" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink">Arduino Uno</text>
+  <text x="400" y="96" text-anchor="middle" font-size="12" class="svg-muted">back ring · NDVI</text>
+  <rect x="510" y="50" width="120" height="60" rx="10" class="svg-surface"/>
+  <text x="570" y="76" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink">LED</text>
+  <text x="570" y="96" text-anchor="middle" font-size="12" class="svg-muted">front brim</text>
+  <rect x="345" y="135" width="110" height="30" rx="8" class="svg-surface"/>
+  <text x="400" y="155" text-anchor="middle" font-size="12" class="svg-muted">9 V battery</text>
+  <g stroke="var(--muted)" stroke-width="2" fill="none">
+    <path d="M120 80 H152"/><path d="M290 80 H322"/><path d="M470 80 H502"/><path d="M400 135 V118"/>
+  </g>
+  <g class="svg-muted"><path d="M152 75 l8 5 -8 5z"/><path d="M322 75 l8 5 -8 5z"/><path d="M502 75 l8 5 -8 5z"/><path d="M395 118 l5 -8 5 8z"/></g>
+  <text x="306" y="70" text-anchor="middle" font-size="11" class="svg-muted">I2C</text>
+  <text x="486" y="70" text-anchor="middle" font-size="11" class="svg-muted">D12/D13</text>
+</svg>
+<figcaption>Signal flow on the hat.</figcaption>
+</figure>
+
+<h3>Components</h3>
+<div class="table-scroll"><table>
+<thead><tr><th>Part</th><th>Where / role</th></tr></thead>
+<tbody>
+<tr><td>Adafruit AS7343 14-channel spectral sensor</td><td>Front brim, facing the leaf. Uses channels F7 (~690 nm, red), F8 (~745 nm, red edge) and NIR (~855 nm).</td></tr>
+<tr><td>Arduino Uno R3</td><td>Back of the hat on the 3D-printed ring. Reads the sensor, calculates NDVI, drives the LED.</td></tr>
+<tr><td>RGB LED, common cathode</td><td>Front brim. Only the red and green legs are wired. Soldered on perfboard with two 220 Ω resistors.</td></tr>
+<tr><td>9 V battery</td><td>Back of the hat; powers the Uno.</td></tr>
+<tr><td>Jumper wires</td><td>Extensions running from the brim to the back.</td></tr>
+<tr><td>3D-printed ring</td><td>Mount for the electronics at the back of the cone. Enclosures designed but not yet fitted.</td></tr>
+<tr><td>Conical hat (caping)</td><td>Traditional straight-cone field hat.</td></tr>
+</tbody></table></div>
+
+<h3>Wiring</h3>
+<div class="table-scroll"><table>
+<thead><tr><th>From</th><th>To (Uno)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Sensor VIN</td><td>5V</td><td>Power header</td></tr>
+<tr><td>Sensor GND</td><td>GND</td><td>Power header</td></tr>
+<tr><td>Sensor SDA</td><td>A4</td><td>I2C data</td></tr>
+<tr><td>Sensor SCL</td><td>A5</td><td>I2C clock. A4/A5 swapped = "sensor not found"</td></tr>
+<tr><td>LED red leg via 220 Ω</td><td>D12</td><td>On/off only (not PWM)</td></tr>
+<tr><td>LED green leg via 220 Ω</td><td>D13</td><td>On/off only; also drives the Uno's on-board "L" LED</td></tr>
+<tr><td>LED common (longest) leg</td><td>GND</td><td>Common cathode</td></tr>
+</tbody></table></div>
+<p>To show an amber "borderline" state, move the LED to PWM pins (9, 10 or 11) and mix red and green with <code>analogWrite</code>.</p>
+
+<!-- 5 -->
+<h2 id="firmware"><span class="num">5</span>Firmware and logger</h2>
+<h3>Arduino sketch</h3>
+<p>File: <code>firmware/hatvest_ndvi/hatvest_ndvi.ino</code>. Needs the <b>Adafruit AS7343</b> library.</p>
+<ul>
+  <li><b>Start-up:</b> LED self-test (green, then red). If the sensor is missing, the LED flashes red continuously.</li>
+  <li><b>Sensor settings:</b> gain 64×, <code>ATIME</code> 29, <code>ASTEP</code> 599 (about 50 ms integration).</li>
+  <li><b>Calibration:</b> <code>w</code> stores the white reference and saves it to EEPROM, so it survives power cycles. It is loaded automatically on start-up.</li>
+  <li><b>Measuring:</b> streams a reading every second; <code>r</code> takes one reading; <code>s</code> pauses or resumes the stream.</li>
+  <li><b>Maths:</b> reflectance = leaf ÷ white for each channel, then NDVI = (NIR − Red) ÷ (NIR + Red). NDRE = (NIR − Edge) ÷ (NIR + Edge) is printed too.</li>
+  <li><b>Safety checks:</b> saturated readings (65,535) are rejected with a warning; invalid maths turns the LED off.</li>
+  <li><b>Threshold:</b> <code>NDVI_THRESHOLD = 0.35</code>, set from our test data.</li>
+</ul>
+<p>Example Serial Monitor output (115200 baud):</p>
+<pre><code>SAMPLE raw red(F7)=427 edge(F8)=419 nir=1524 | NDVI=0.416 NDRE=0.147 -&gt; GREEN (healthy)</code></pre>
+
+<h3>Python logger</h3>
+<p>File: <code>tools/ndvi_logger.py</code>. Saves each reading with a timestamp and a label to <code>ndvi_log.csv</code> next to the script.</p>
+<pre><code>pip install pyserial
+python tools/ndvi_logger.py          # finds the port automatically
+&gt; label healthy leaf 1
+&gt; w                                  # white card under the sensor first
+&gt; r                                  # one reading, saved to CSV
+&gt; q</code></pre>
+<p>Close the Arduino Serial Monitor first: only one program can use the port. The logger pauses the live stream so only deliberate readings are saved.</p>
+
+<!-- 6 -->
+<h2 id="results"><span class="num">6</span>Testing and results</h2>
+<h3>Method (19 October 2026)</h3>
+<ul>
+  <li>Outdoors in daylight, on campus. White reference taken before each set.</li>
+  <li>Six plants: three healthy (H1 to H3) and three with visible stress (S1 to S3), chosen by eye.</li>
+  <li>Three to five readings per leaf, 20 readings in total, logged with labels.</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 640 280" role="img" aria-label="Bar chart of mean NDVI per leaf: H1 0.40, H2 0.40, H3 0.49, S1 0.20, S2 0.26, S3 0.29, with a threshold line at 0.35. All healthy bars are above the line and all stressed bars below.">
+  <line x1="60" y1="230" x2="620" y2="230" class="svg-line" stroke-width="1.5"/>
+  <g font-size="12" class="svg-muted">
+    <text x="50" y="234" text-anchor="end">0</text>
+    <text x="50" y="134" text-anchor="end">0.25</text>
+    <text x="50" y="34" text-anchor="end">0.50</text>
+  </g>
+  <line x1="60" y1="130" x2="620" y2="130" class="svg-line" stroke-dasharray="2 4"/>
+  <line x1="60" y1="30" x2="620" y2="30" class="svg-line" stroke-dasharray="2 4"/>
+  <!-- scale: 400 px per 1.0 NDVI; y = 230 - v*400 -->
+  <rect x="85"  y="70"  width="60" height="160" class="svg-olive"/>
+  <rect x="175" y="70"  width="60" height="160" class="svg-olive"/>
+  <rect x="265" y="34"  width="60" height="196" class="svg-olive"/>
+  <rect x="355" y="150" width="60" height="80"  class="svg-terra"/>
+  <rect x="445" y="126" width="60" height="104" class="svg-terra"/>
+  <rect x="535" y="114" width="60" height="116" class="svg-terra"/>
+  <line x1="70" y1="90" x2="610" y2="90" stroke="var(--ink)" stroke-width="2"/>
+  <text x="612" y="84" text-anchor="end" font-size="12" font-weight="700" class="svg-ink">Threshold 0.35</text>
+  <g font-size="13" font-weight="700" text-anchor="middle" class="svg-ink">
+    <text x="115" y="64">0.40</text><text x="205" y="64">0.40</text><text x="295" y="28">0.49</text>
+    <text x="385" y="144">0.20</text><text x="475" y="120">0.26</text><text x="565" y="108">0.29</text>
+  </g>
+  <g font-size="13" text-anchor="middle" class="svg-muted">
+    <text x="115" y="250">H1</text><text x="205" y="250">H2</text><text x="295" y="250">H3</text>
+    <text x="385" y="250">S1</text><text x="475" y="250">S2</text><text x="565" y="250">S3</text>
+  </g>
+  <text x="340" y="272" text-anchor="middle" font-size="12" class="svg-muted">Mean NDVI per leaf · H = healthy, S = stressed</text>
+</svg>
+<figcaption>All healthy leaves sit above 0.35 and all stressed leaves below.</figcaption>
+</figure>
+
+<div class="table-scroll"><table>
+<thead><tr><th>Group</th><th class="num">Readings</th><th class="num">Mean NDVI</th><th class="num">Range</th></tr></thead>
+<tbody>
+<tr><td>Healthy</td><td class="num">9</td><td class="num">0.43</td><td class="num">0.386 – 0.498</td></tr>
+<tr><td>Stressed</td><td class="num">11</td><td class="num">0.26</td><td class="num">0.186 – 0.313</td></tr>
+</tbody></table></div>
+
+<h3>What we learned</h3>
+<ul>
+  <li><b>NDVI separated the groups</b> with no overlap, using parts that cost far less than a commercial meter.</li>
+  <li><b>Repeatable:</b> readings on the same leaf varied by about ±0.02.</li>
+  <li><b>Threshold:</b> 0.35 classified all 20 readings correctly. The original 0.25 missed 7 of 11 stressed readings, so we changed the sketch.</li>
+  <li><b>NDRE did not help</b> here: the red-edge index did not separate healthy from stressed leaves.</li>
+  <li><b>Light level:</b> the first two white references (NIR counts 10 to 25) were far too dark and are invalid. Even the valid ones (about 2,300 to 3,600 counts) were below the recommended 5,000 to 50,000, so raise the gain next time.</li>
+</ul>
+<div class="note warn"><p><b>Caveats:</b> one session, six campus plants chosen by eye, autumn conditions. Some "stressed" leaves may have been natural autumn senescence rather than crop stress. The 0.35 threshold is provisional and should be re-derived from larger, crop-specific samples.</p></div>
+<p>Raw data: <code>data/ndvi_log_2026-10-19.csv</code> (columns: timestamp, type, label, red_F7, edge_F8, nir, ndvi, ndre).</p>
+
+<!-- 7 -->
+<h2 id="limits"><span class="num">7</span>Limitations</h2>
+<ul>
+  <li><b>Calibration depends on the light at that moment.</b> Retake the white reference whenever light changes. Readings under indoor LED lighting are meaningless.</li>
+  <li><b>Electronics exposed.</b> The 3D-printed enclosures need resizing and fitting.</li>
+  <li><b>Balance.</b> The Uno and battery at the back make the hat tip backwards.</li>
+  <li><b>Sensor board LED.</b> The AS7343 board's own indicator LED may reach the sensor at close range; not yet tested.</li>
+  <li><b>Narrow validation.</b> Campus plants only, no crops under controlled stress, no farmer testing.</li>
+  <li><b>Non-green plants.</b> Healthy red or purple (anthocyanin-rich) leaves might read as stressed. In purple sweet potato leaves, red-edge reflectance still tracked chlorophyll whether or not anthocyanins were present, while green-band estimates were distorted.<sup>8</sup> That study did not test NDVI, and neither have we.</li>
+  <li><b>Aiming and distance</b> are left to the wearer; both affect the reading.</li>
+</ul>
+
+<!-- 8 -->
+<h2 id="improvements"><span class="num">8</span>Improvements for the next team</h2>
+<p><span class="pill p1">Priority 1</span> do first · <span class="pill p2">Priority 2</span> next · <span class="pill p3">Later</span> once the basics work</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Priority</th><th>Improvement</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td><span class="pill p1">P1</span></td><td><b>Automatic light correction.</b> Either a second AS7343 facing the sky under a diffuser (needs an I2C multiplexer such as TCA9548A, since both sensors share one address, plus a one-off cross-calibration), or an active light source with its own red and NIR LEDs, as GreenSeeker does. Note: in drone tests, sky-sensor correction was workable but less accurate than a white reference panel,<sup>9</sup> so keep an occasional white-card check either way.</td><td>Removes the manual white card, the biggest weakness.</td></tr>
+<tr><td><span class="pill p1">P1</span></td><td><b>Auto gain and exposure.</b> Adjust gain, ATIME and ASTEP so the white reference sits around 30 to 70% of full scale.</td><td>Daylight varies over 100×; fixed settings saturate in sun or go noisy in shade.</td></tr>
+<tr><td><span class="pill p1">P1</span></td><td><b>Validate on real crops</b> (e.g. rice, leafy vegetables) under controlled stress, more plants and sessions; set per-crop thresholds.</td><td>Our data is six campus plants in one session.</td></tr>
+<tr><td><span class="pill p1">P1</span></td><td><b>Fit the enclosures</b> (adjust dimensions) and a sealed sensor window.</td><td>Electronics are exposed.</td></tr>
+<tr><td><span class="pill p1">P1</span></td><td><b>Rebalance the hat:</b> move the battery forward or add a counterweight.</td><td>It tips backwards.</td></tr>
+<tr><td><span class="pill p1">P1</span></td><td><b>Test earlier-warning signals.</b> Compute green-band and red-edge indices from the AS7343 channels we already have (no new hardware); add a low-cost infrared thermometer (e.g. MLX90614) for leaf temperature, with an air-temperature reference. Compare against NDVI on plants under controlled stress, before symptoms appear.</td><td>"Earlier than the eye" is the strongest possible selling point, and it is untested.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Wiring harness:</b> soldered, strain-relieved, with a detachable plug between brim and back.</td><td>Jumper chains work loose with head movement.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Block the sensor board's LED</b> and check whether readings change.</td><td>Possible stray light at close range.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Aiming aid:</b> "hold still to measure" (IMU) trigger and a fixed measuring distance (spacer or distance sensor).</td><td>Steady aim and distance improve reading quality.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Adjustable fit</b> for different head sizes; electronics never touching the head.</td><td>One-size ring only fits some wearers.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Power:</b> rechargeable LiPo with USB-C instead of 9 V; measure battery life.</td><td>9 V batteries are heavy, short-lived and wasteful.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Smaller board</b> (e.g. Nano Every).</td><td>The Uno is bulky (about 25 g, 69 × 53 mm).</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Test non-green plants</b> (red or purple leaves); per-species thresholds.</td><td>They may read as stressed.</td></tr>
+<tr><td><span class="pill p2">P2</span></td><td><b>Farmer testing</b> for comfort, heat and usability.</td><td>Bench tests don't capture real use.</td></tr>
+<tr><td><span class="pill p3">Later</span></td><td><b>Amber "borderline" state</b> (needs PWM pins); explore NDRE for early stress on more data.</td><td>A single cut-off hides uncertain readings.</td></tr>
+<tr><td><span class="pill p3">Later</span></td><td><b>LED visibility</b> in bright sun; optional buzzer or vibration.</td><td>Small LEDs wash out outdoors.</td></tr>
+<tr><td><span class="pill p3">Later</span></td><td><b>Weatherproofing</b> against rain, dust and sweat.</td><td>Field conditions.</td></tr>
+<tr><td><span class="pill p3">Later</span></td><td><b>Optional data logging with GPS</b> (SD card or Bluetooth to a phone) to map NDVI across the whole field. Farmers who don't want it just use the LED.</td><td>Turns spot checks into a field map and a record farmers can act on.</td></tr>
+</tbody></table></div>
+
+<!-- 9 -->
+<h2 id="start"><span class="num">9</span>Your first week</h2>
+<ol>
+  <li><b>Get it running on the bench.</b> Install the Arduino IDE and the Adafruit AS7343 library, upload the sketch, check the LED self-test.</li>
+  <li><b>Repeat our test outdoors</b> with <code>docs/bench_test_guide.html</code> and the logger. Do the gain check first (white card counts between about 5,000 and 50,000).</li>
+  <li><b>Decide the light strategy:</b> sky sensor or active light. This shapes the hardware, the enclosure and the budget.</li>
+  <li><b>Plan a proper trial:</b> which crop, how you will create controlled stress (e.g. withholding water), how many plants, how often.</li>
+  <li><b>Fix the physical basics:</b> enclosures, harness and balance, so the hat can be worn for longer tests.</li>
+</ol>
+
+<!-- 10 -->
+<h2 id="lessons"><span class="num">10</span>Lessons and gotchas</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>Symptom</th><th>Cause and fix</th></tr></thead>
+<tbody>
+<tr><td>Strange or near-zero NIR readings indoors</td><td>LED room lights have almost no NIR. Test in daylight or under a halogen lamp.</td></tr>
+<tr><td>LED flashing red fast at start-up</td><td>Sensor not found. Check the four sensor wires; A4 and A5 swapped is the usual cause.</td></tr>
+<tr><td>Readings stuck at 65,535 / "saturated" warning</td><td>Too much light for the gain. Lower the gain one step (<code>AS7343_GAIN_32X</code>) or move the lamp away.</td></tr>
+<tr><td>Readings jumpy, white card under ~2,000 counts</td><td>Too little signal. Raise the gain one step (<code>AS7343_GAIN_128X</code>).</td></tr>
+<tr><td>Logger can't open the port</td><td>Close the Arduino Serial Monitor; only one program can use the port.</td></tr>
+<tr><td>No port in Tools → Port</td><td>Re-plug USB; clone boards may need the CH340 driver.</td></tr>
+<tr><td>Amber colour won't mix</td><td>Pins 12 and 13 aren't PWM. Use pins 9, 10 or 11.</td></tr>
+<tr><td>Old calibration after moving location</td><td>The white reference persists in EEPROM. Press <code>w</code> again in the new light.</td></tr>
+<tr><td>Uno header confusion</td><td>On the digital header, AREF sits next to GND; check the printed labels.</td></tr>
+</tbody></table></div>
+
+<!-- 11 -->
+<h2 id="refs"><span class="num">11</span>References</h2>
+<ol class="refs">
+  <li>IPCC (2022). <em>Climate Change 2022: Impacts, Adaptation and Vulnerability.</em> Working Group II, Summary for Policymakers (B.1.3). <a href="https://www.ipcc.ch/report/ar6/wg2/chapter/summary-for-policymakers/">ipcc.ch</a></li>
+  <li>Zhao, C. et al. (2017). Temperature increase reduces global yields of major crops in four independent estimates. <em>PNAS</em> 114(35), 9326–9331. <a href="https://doi.org/10.1073/pnas.1701762114">doi:10.1073/pnas.1701762114</a></li>
+  <li>Lowder, S.K., Sánchez, M.V. &amp; Bertini, R. (2021). Which farms feed the world and has farmland become more concentrated? <em>World Development</em> 142, 105455. <a href="https://doi.org/10.1016/j.worlddev.2021.105455">doi:10.1016/j.worlddev.2021.105455</a></li>
+  <li>Rouse, J.W., Haas, R.H., Schell, J.A. &amp; Deering, D.W. (1974). Monitoring vegetation systems in the Great Plains with ERTS. <em>Third ERTS-1 Symposium</em>, NASA SP-351, Vol. 1. First use of the normalised red and NIR difference, which they called the "band ratio parameter"; the name NDVI came later. <a href="https://ntrs.nasa.gov/citations/19740022614">NASA NTRS</a></li>
+  <li>Tucker, C.J. (1979). Red and photographic infrared linear combinations for monitoring vegetation. <em>Remote Sensing of Environment</em> 8(2), 127–150. <a href="https://ntrs.nasa.gov/citations/19790049033">NASA NTRS</a></li>
+  <li>Peñuelas, J. &amp; Filella, I. (1998). Visible and near-infrared reflectance techniques for diagnosing plant physiological status. <em>Trends in Plant Science</em> 3(4), 151–156. <a href="https://doi.org/10.1016/S1360-1385(98)01213-8">doi:10.1016/S1360-1385(98)01213-8</a></li>
+  <li>Zarco-Tejada, P.J. et al. (2018). Previsual symptoms of <em>Xylella fastidiosa</em> infection revealed in spectral plant-trait alterations. <em>Nature Plants</em> 4, 432–439. <a href="https://doi.org/10.1038/s41477-018-0189-7">doi:10.1038/s41477-018-0189-7</a></li>
+  <li>Huang, J. et al. (2014). Eliminating interference by anthocyanin in chlorophyll estimation of sweet potato (<em>Ipomoea batatas</em> L.) leaves. <em>Botanical Studies</em> 55, 11. <a href="https://doi.org/10.1186/1999-3110-55-11">doi:10.1186/1999-3110-55-11</a></li>
+  <li>Mamaghani, B. &amp; Salvaggio, C. (2019). Comparative study of panel and panelless-based reflectance conversion techniques for agricultural remote sensing. <a href="https://arxiv.org/abs/1910.03734">arXiv:1910.03734</a></li>
+</ol>
+<h3>Product and market sources</h3>
+<ol class="refs" type="a">
+  <li id="s1">PrecisionAg. GreenSeeker goes handheld (list price from US$495). <a href="https://www.precisionag.com/market-watch/greenseeker-goes-handheld/">precisionag.com</a></li>
+  <li id="s2">Oklahoma State University Extension. Use of optical sensors to monitor plant nitrogen status in horticultural plants (GreenSeeker's own LEDs). <a href="https://extension.okstate.edu/fact-sheets/use-of-optical-sensors-to-monitor-plant-nitrogen-status-in-horticultural-plants.html">extension.okstate.edu</a></li>
+  <li id="s3">PTx Trimble. GreenSeeker handheld crop sensor, product page. <a href="https://www.ptxtrimble.com/en/products/hardware/flow-application-control/greenseeker-handheld-crop-sensor">ptxtrimble.com</a></li>
+  <li id="s4">Cao, Q. et al. (2018). Evaluating two Crop Circle active canopy sensors for in-season diagnosis of winter wheat nitrogen status. <em>Agronomy</em> 8(10), 201. <a href="https://doi.org/10.3390/agronomy8100201">doi:10.3390/agronomy8100201</a></li>
+  <li id="s5">NERC Field Spectroscopy Facility. MicaSense RedEdge-M. <a href="https://fsf.nerc.ac.uk/instruments/uav/rededge-m/">fsf.nerc.ac.uk</a></li>
+  <li id="s6">Yale Center for Earth Observation. What is Sentinel-2? <a href="https://yceo.yale.edu/what-sentinel-2">yceo.yale.edu</a></li>
+  <li id="s7">Farming First (2011). Leaf colour charts help Asian farmers manage nitrogen fertilizers. <a href="https://farmingfirst.org/2011/01/leaf-colour-charts-help-asian-farmers-manage-nitrogen-fertilizers/">farmingfirst.org</a></li>
+  <li id="s8">Future Farming (2024). Plantix: more than a crop doctor driven by AI. <a href="https://www.futurefarming.com/smart-farming/plantix-more-than-a-crop-doctor-driven-by-ai/">futurefarming.com</a></li>
+  <li id="s9">Measur. Precision agriculture with MicaSense (reseller guide: bands, NDVI/NDRE, calibration panel and DLS 2). <a href="https://measur.ca/pages/guides/precision-agriculture-micasense">measur.ca</a></li>
+</ol>
+<p>Prices and product details change; check them before quoting.</p>
+
+<footer>
+  Hatvest · Tech Canopies · Group 4 · MSc Cleantech Innovation, Imperial College London · Handover October 2026.<br>
+  Repository files: <code>firmware/</code> sketch · <code>tools/</code> logger · <code>data/</code> test log · <code>docs/</code> guides.
+</footer>
+</main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  try{var t=localStorage.getItem('hv-theme'); if(t) root.setAttribute('data-theme',t);}catch(e){}
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',next);
+    try{localStorage.setItem('hv-theme',next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

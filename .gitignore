@@ -1,0 +1,17 @@
+# Readings created when running the logger locally
+tools/ndvi_log.csv
+
+# OS and editor files
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Arduino build output
+build/
